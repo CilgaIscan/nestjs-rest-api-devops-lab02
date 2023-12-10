@@ -6,7 +6,9 @@ export class ConfigService {
 
   getAppConfig() {
     return {
-      env: 'development'
+      env: process.env.NODE_ENV || 'development',
+      port: parseInt(process.env.APP_PORT, 10) || 9000,
+      corsOrigins: ['http://localhost:4200', 'http://localhost:5555', 'http://localhost:8080'],
     }
   }
 }
