@@ -1,4 +1,5 @@
-FROM node:20-alpine
+# Build for PRODUCTION
+FROM node:20-alpine AS build
 
 WORKDIR /usr/src/app
 
@@ -10,4 +11,13 @@ COPY . .
 
 RUN npm run build
 
-CMD ["npm", "run", "start:prod"]
+
+# Run for PRODUCTION
+FROM node:20-alpine As production
+
+COPY --from=build /usr/src/app/node_modules ./node_modules
+COPY --from=build /usr/src/app/dist ./dist
+
+EXPOSE 3000
+
+CMD [ "node", "dist/main.js" ]
